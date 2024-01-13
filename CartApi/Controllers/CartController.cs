@@ -1,5 +1,6 @@
 ﻿using AspireWithDapr.ServiceDefaults;
 using AspireWithDapr.ServiceDefaults.Models;
+using AspireWithDapr.ServiceDefaults.Requests;
 using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,39 +17,45 @@ namespace CartApi.Controllers
             _daprClient = daprClient;
         }
 
-        [HttpPost("save")]
-        public async Task<IActionResult> SaveToCart(Cart cart)
-        {
-            await _daprClient.SaveStateAsync<Cart>(
-                Constants.StateStoreName,
-                cart.UserName,
-                cart);
-
-            return Ok();
-        }
-
         [HttpGet("read")]
-        public async Task<ActionResult<Cart?>> ReadFromCart(string userName)
+        public async Task<ActionResult<Order?>> ReadOrder(string userName)
         {
-            var cart = await _daprClient.GetStateAsync<Cart>(
+            var order = await _daprClient.GetStateAsync<Order>(
                 Constants.StateStoreName,
                 userName);
 
-            if (cart == null)
+            if (order == null)
             {
                 return NotFound();
             }
 
-            return Ok(cart);
+            return Ok(order);
         }
 
         [HttpPost("order")]
-        public async Task<IActionResult> PlaceOrder(Cart cart)
+        public async Task<IActionResult> PlaceOrder(OrderRequest request)
         {
+            var product = await _daprClient.InvokeMethodAsync<Product>(
+                HttpMethod.Get,
+                Constants.ProductsApiName,
+                $"/api/Products/product?id={request.ProductId}");
+
+            Order order = new()
+            {
+                Product = product,
+                Quantity = request.Quantity,
+                UserName = request.Username
+            };
+
+            await _daprClient.SaveStateAsync<Order>(
+                Constants.StateStoreName,
+                order.UserName,
+                order);
+
             await _daprClient.PublishEventAsync(
                 Constants.PubSubName,
                 Constants.OrderTopic,
-                cart);
+                order);
 
             return Ok();
         }

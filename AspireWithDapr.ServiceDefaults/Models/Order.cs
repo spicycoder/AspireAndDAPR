@@ -1,6 +1,6 @@
 ﻿namespace AspireWithDapr.ServiceDefaults.Models;
 
-public class Cart
+public class Order
 {
     public string UserName { get; set; }
     public Product Product { get; set; }

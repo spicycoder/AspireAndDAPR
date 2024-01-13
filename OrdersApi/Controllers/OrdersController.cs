@@ -18,9 +18,9 @@ namespace OrdersApi.Controllers
 
         [Topic(Constants.PubSubName, Constants.OrderTopic)]
         [HttpPost("order")]
-        public async Task<IActionResult> PlaceOrder(Cart cart)
+        public async Task<IActionResult> PlaceOrder(Order order)
         {
-            _logger.LogInformation("Placing order for {cart}", cart);
+            _logger.LogInformation("Placing order: {order}", order);
 
             return Ok();
         }

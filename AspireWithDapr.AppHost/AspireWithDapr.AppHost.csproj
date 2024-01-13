@@ -17,6 +17,7 @@
     <ProjectReference Include="..\AspireWithDapr.ServiceDefaults\AspireWithDapr.ServiceDefaults.csproj" />
     <ProjectReference Include="..\CartApi\CartApi.csproj" />
     <ProjectReference Include="..\OrdersApi\OrdersApi.csproj" />
+    <ProjectReference Include="..\ProductsApi\ProductsApi.csproj" />
   </ItemGroup>
 
 </Project>

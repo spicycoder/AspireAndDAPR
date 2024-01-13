@@ -17,4 +17,7 @@ var ordersApi = builder.AddProject<Projects.OrdersApi>(Constants.OrdersApiName)
     .WithDaprSidecar()
     .WithReference(pubSub);
 
+var productsApi = builder.AddProject<Projects.ProductsApi>(Constants.ProductsApiName)
+    .WithDaprSidecar();
+
 builder.Build().Run();
