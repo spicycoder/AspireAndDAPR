@@ -6,4 +6,5 @@ public static class Constants
     public const string PubSubName = "pubsub";
     public const string CartApiName = "cartservice";
     public const string OrdersApiName = "ordersservice";
+    public const string OrderTopic = "order-topic";
 }

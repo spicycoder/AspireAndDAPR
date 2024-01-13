@@ -41,5 +41,16 @@ namespace CartApi.Controllers
 
             return Ok(cart);
         }
+
+        [HttpPost("order")]
+        public async Task<IActionResult> PlaceOrder(Cart cart)
+        {
+            await _daprClient.PublishEventAsync(
+                Constants.PubSubName,
+                Constants.OrderTopic,
+                cart);
+
+            return Ok();
+        }
     }
 }
