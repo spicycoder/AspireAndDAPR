@@ -2,7 +2,8 @@ using AspireWithDapr.ServiceDefaults;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var stateStore = builder.AddDaprStateStore(Constants.StateStoreName);
+var stateStore = builder.AddDaprStateStore(Constants.StateStoreName)
+    .WithDaprSidecar();
 
 var cartApi = builder.AddProject<Projects.CartApi>(Constants.CartApiName)
     .WithDaprSidecar()
